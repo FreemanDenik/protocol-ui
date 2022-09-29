@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Домини Диртх</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <base href="https://xn----7sbadhsa7cb5cl7h.xn--p1ai/index.php"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="keywords" content="помощь, дети, ребёнок, инвалид, аутизм, лечение"/>
+    <meta name="author" content="Super User"/>
+    <meta name="description" content=""/>
+    <meta name="generator" content="Joomla! - Open Source Content Management"/>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="http://localhost:5000/css/style.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+            integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+
+    <script src="http://localhost:5000/js/java-script.js?v"></script>
+
+
+</head>
+<body>
+
+<div class='container'>
+    <br/>
+    <h1>Домини Диртх</h1>
+    <hr/>
+    <p> Вам поручено найти пропавшую эльфийку. <br/>
+        Вам удалось узнать, что последнее место где ее видели, это в городе
+        Домини Диртх, в который вы и прибыли... <br/>
+        И на который спустя некоторое время напали и взяли в осаду. <br/>
+    </p>
+    <p> Вы отправляетесь в городскую таверну, дабы там хоть что то разузнать. </p>
+    <p> Теперь по улицам не пройти без королевской грамоты, иначе вас заподозрят в шпионаже. </p>
+    <p> Вот и сейчас вас остановил очередной стражник и требует грамоту, подтверждающую личность. </p>
+    <hr/>
+    <h2>Стой! Предъявите грамоту!</h2>
+
+    <div class="login-block">
+        <form id="form-login" action="http://localhost:4444/api/auth/login">
+            <input name="login" class="form-control" placeholder="Введите логин"/><hr style="background:lightgrey"/>
+            <input name="password" class="form-control" placeholder="Введите пароль"/>
+            <hr style="background:lightgrey"/>
+            <div style="font-size: 11px; color:brown; text-align: left">
+                На почту будет отправлено одно письмо с паролем и все! <br/>
+                Не какого спама не будет, 3-м лицам почту не передаем <br/>
+                Только вы и мы и одно письмо, все по честному! :)
+            </div>
+            <hr style="background:lightgrey"/>
+            <button type="submit" class="btn btn-primary">
+                Предъявить грамоту
+            </button>
+        </form>
+    </div>
+
+</div>
+</body>
+</html>
+<script>
+    function convertFormToJSON(form) {
+        return JSON.stringify($(form)
+            .serializeArray()
+            .reduce(function (json, { name, value }) {
+                json[name] = value;
+                return json;
+            }, {}));
+    }
+    $(function () {
+        $('#form-login').on('submit', async function (event) {
+            event.preventDefault();
+            let form = convertFormToJSON(event.target);
+            console.log(form);
+            let action = $(this).attr('action');
+
+            let response = await fetch(action, {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                mode: 'cors',
+                method: 'POST',
+                body: form
+            });
+            let json = await response.json();
+            if (response.ok) {
+                console.log(json);
+            }
+
+
+        })
+    })
+</script>
