@@ -15,66 +15,216 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link href="http://localhost:5000/css/style.css" rel="stylesheet">
 
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"
             integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <link href="http://localhost:5000/css/style.css?fcs" rel="stylesheet">
 
-    <script src="http://localhost:5000/js/java-script.js?v"></script>
+    <script src="http://localhost:5000/js/java-script.js?vs"></script>
 
 
 </head>
 <body>
 
 <div class='container'>
-    <br/>
-    <h1>Домини Диртх</h1>
-    <hr/>
-    <p> Вам поручено найти пропавшую эльфийку. <br/>
-        Вам удалось узнать, что последнее место где ее видели, это в городе
-        Домини Диртх, в который вы и прибыли... <br/>
-        И на который спустя некоторое время напали и взяли в осаду. <br/>
-    </p>
-    <p> Вы отправляетесь в городскую таверну, дабы там хоть что то разузнать. </p>
-    <p> Теперь по улицам не пройти без королевской грамоты, иначе вас заподозрят в шпионаже. </p>
-    <p> Вот и сейчас вас остановил очередной стражник и требует грамоту, подтверждающую личность. </p>
-    <hr/>
-    <h2>Стой! Предъявите грамоту!</h2>
+    <div id="login">
+        <br/>
+        <h1>Домини Диртх</h1>
+        <hr/>
+        <p> Вам поручено найти пропавшую эльфийку. <br/>
+            Вам удалось узнать, что последнее место где ее видели, это в городе
+            Домини Диртх, в который вы и прибыли... <br/>
+            И на который спустя некоторое время напали и взяли в осаду. <br/>
+        </p>
+        <p> Вы отправляетесь в городскую таверну, дабы там хоть что то разузнать. </p>
+        <p> Теперь по улицам не пройти без королевской грамоты, иначе вас заподозрят в шпионаже. </p>
+        <p> Вот и сейчас вас остановил очередной стражник и требует грамоту, подтверждающую личность. </p>
+        <hr/>
 
-    <div class="login-block">
-        <form id="form-login" action="http://localhost:4444/api/auth/login">
-            <input name="login" class="form-control" placeholder="Введите логин"/><hr style="background:lightgrey"/>
-            <input name="password" class="form-control" placeholder="Введите пароль"/>
-            <hr style="background:lightgrey"/>
-            <div style="font-size: 11px; color:brown; text-align: left">
-                На почту будет отправлено одно письмо с паролем и все! <br/>
-                Не какого спама не будет, 3-м лицам почту не передаем <br/>
-                Только вы и мы и одно письмо, все по честному! :)
+
+        <form id="form-login" action="http://localhost:8080/api/auth/register">
+            <h2>Стой! Предъяви грамоту!</h2>
+            <div class="login-block">
+                <hr/>
+                <input name="email" required type="email" class="form-control" placeholder="Введите email"/>
+
+                <hr/>
+                <div style="font-size: 11px; color:brown; text-align: left">
+                    На почту будет отправлено одно письмо с паролем и все! <br/>
+                    Не какого спама не будет, 3-м лицам почту не передаем <br/>
+                    Только вы и мы и одно письмо, все по честному! :)
+                </div>
+                <hr/>
             </div>
-            <hr style="background:lightgrey"/>
+            <div class="display-none">
+                <h3 id="say">Сейчас посмотрю... эм-м... Да! Есть такой.<br/>Отличной, распишитесь здесь и можешь идти.
+                </h3>
+                <div class="login-block">
+                    <input disabled name="password" required type="password" class="form-control"
+                           placeholder="Введите пароль"/>
+                    <hr/>
+                    <div style="font-size: 11px; color:brown; text-align: left">
+                        Пароль был отправлен на почту при первом входе
+                    </div>
+                    <hr/>
+                </div>
+            </div>
+            <div class="login-block">
+            </div>
             <button type="submit" class="btn btn-primary">
                 Предъявить грамоту
             </button>
         </form>
     </div>
 
+    <!--  GAME  -->
+    <div id="game" class="display-none">
+        <br/>
+        <h1>город Домини Диртх</h1>
+        <hr/>
+        <h2>Таверна "Грива Гавриила"</h2>
+        <hr/>
+        <div id="target">
+            <table class="table" style="text-align: center">
+                <thead>
+                <tr>
+                    <th scope="col">Золото</th>
+                    <th scope="col">Репутация</th>
+                    <th scope="col">Здоровье</th>
+                    <th scope="col">Бойкость</th>
+                    <th scope="col">Жажда</th>
+                    <th scope="col">Скрытность</th>
+                </tr>
+                </thead>
+                <tr>
+
+                    <td><h3 id="gold"></h3></td>
+
+
+                    <td><h3 id="reputation"></h3></td>
+
+                    <td><h3 id="health"></h3></td>
+
+                    <td><h3 id="fight"></h3></td>
+
+                    <td><h3 id="thirst"></h3></td>
+
+
+                    <td><h3 id="shadow"></h3></td>
+
+                </tr>
+            </table>
+        </div>
+        <hr/>
+        <h2 id="question"></h2>
+        <hr/>
+        <div id="answers"></div>
+        <hr/>
+    </div>
 </div>
 </body>
 </html>
-<script>
-    function convertFormToJSON(form) {
-        return JSON.stringify($(form)
-            .serializeArray()
-            .reduce(function (json, { name, value }) {
-                json[name] = value;
-                return json;
-            }, {}));
+<style>
+    * {
+        padding: 0;
+        margin: 0;
     }
+
+    hr {
+        background: lightgrey
+    }
+
+    .login-block {
+        max-width: 300px;
+
+    }
+
+    .btn, .form-control {
+        border-radius: 0;
+    }
+
+    .display-none {
+        display: none;
+    }
+</style>
+<script>
+    let TOKEN_INFO;
+
+    // GAME
+    async function initializer() {
+
+        let response = await fetch('http://localhost:8080/api/game/initializer', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + TOKEN_INFO.accessToken,
+            },
+            mode: 'cors',
+            method: 'POST'
+        });
+        let json = await response.json();
+        $('#gold').text(json.first.gold)
+        $('#reputation').text(json.first.reputation)
+        $('#health').text(json.first.health)
+        $('#thirst').text(json.first.thirst)
+        $('#fight').text(json.first.fight)
+        $('#shadow').text(json.first.shadow)
+        console.log(json);
+        $('#question').text(json.second.question);
+        $.each(json.second.answers, function (e, i) {
+            $('#answers').append(
+                $('<button/>', {
+                    text: i.text,
+                    'class': 'btn btn-primary',
+                    click: function () {
+                        send(json.second.id, i.id);
+                    }
+                })
+            ).append("<br/><br/>");
+        })
+    }
+
+    async function send(event, answer) {
+
+        let response = await fetch('http://localhost:8080/api/game/go', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + TOKEN_INFO.accessToken,
+            },
+            mode: 'cors',
+            method: 'POST',
+            body: '{"event":"' + event + '","answer":"' + answer + '"}'
+        });
+        let json = await response.json();
+        $('#gold').text(json.first.gold)
+        $('#reputation').text(json.first.reputation)
+        $('#health').text(json.first.health)
+        $('#thirst').text(json.first.thirst)
+        $('#fight').text(json.first.fight)
+        $('#shadow').text(json.first.shadow)
+        console.log(json);
+        $('#question').text(json.second.question);
+        $('#answers').empty();
+        $.each(json.second.answers, function (e, i) {
+            $('#answers').append(
+                $('<button/>', {
+                    text: i.text,
+                    'class': 'btn btn-primary',
+                    click: function () {
+                        send(json.second.id, i.id);
+                    }
+                })
+            ).append("<br/><br/>");
+        })
+    }
+
+
     $(function () {
-        $('#form-login').on('submit', async function (event) {
+
+        // Регистрация и вход
+        $('#login #form-login').on('submit', async function (event) {
             event.preventDefault();
             let form = convertFormToJSON(event.target);
-            console.log(form);
+
             let action = $(this).attr('action');
 
             let response = await fetch(action, {
@@ -85,12 +235,31 @@
                 method: 'POST',
                 body: form
             });
-            let json = await response.json();
-            if (response.ok) {
-                console.log(json);
+
+            if (!response.ok) {
+                let error = await response.text();
+                console.log("Ошибка на сервере: " + error);
+            } else {
+                let data = await response.json();
+                if (data.user_already_exists) {
+                    console.log("Такой пользователь уже есть");
+                    $(this).find('div[class=display-none]').removeClass("display-none");
+                    $(this).find('input[name=password]').attr('disabled', false);
+                    $(this).find('button[type=submit]').text('Расписаться и отправиться в таверну');
+                    $(this).attr('action', 'http://localhost:8080/api/auth/login')
+
+                } else {
+
+
+                    console.log("token был помещен в localStorage");
+                    TOKEN_INFO = data;
+                    localStorage.setItem("token", data);
+                    $('#login').remove();
+                    $('#game').removeClass('display-none');
+                    initializer();
+
+                }
             }
-
-
         })
     })
 </script>
