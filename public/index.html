@@ -42,11 +42,13 @@
         <hr/>
 
 
-        <form id="form-login" action="http://localhost:8080/api/auth/register">
+        <form id="form-login" action="http://localhost:8080/api/auth/register"  class="needs-validation" novalidate>
             <h2>Стой! Предъяви грамоту!</h2>
             <div class="login-block">
                 <hr/>
-                <input name="email" required type="email" class="form-control" placeholder="Введите email"/>
+                <div>
+                    <input name="email" type="email" class="form-control" id="validationEmail"  placeholder="Введите email" required>
+                </div>
 
                 <hr/>
                 <div style="font-size: 11px; color:brown; text-align: left">
@@ -148,6 +150,27 @@
     }
 </style>
 <script>
+
+    (function () {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+
     let TOKEN_INFO;
 
     // GAME
