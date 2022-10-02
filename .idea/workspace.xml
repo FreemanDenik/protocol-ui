@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9ce5c0e3-2f8d-4514-bbc2-309a17dc9876" name="Changes" comment="добавил логин переход и в игру">
+    <list default="true" id="9ce5c0e3-2f8d-4514-bbc2-309a17dc9876" name="Changes" comment="играбельно">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/error.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/game.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/java-script.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/java-script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/s.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/login.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,10 +20,16 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JavaScript File" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -31,11 +43,14 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "last_opened_file_path": "C:/JavaProjects/Portfolio/protocol-ui",
-    "nodejs_package_manager_path": "npm"
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "Errors"
   }
 }]]></component>
   <component name="RunManager">
@@ -57,7 +72,8 @@
       <workItem from="1664523718878" duration="18154000" />
       <workItem from="1664587921044" duration="498000" />
       <workItem from="1664634588301" duration="119000" />
-      <workItem from="1664635871782" duration="5387000" />
+      <workItem from="1664635871782" duration="10891000" />
+      <workItem from="1664701167080" duration="18052000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1664448395101</created>
@@ -73,7 +89,14 @@
       <option name="project" value="LOCAL" />
       <updated>1664587506541</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="играбельно">
+      <created>1664665907334</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1664665907334</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -93,6 +116,11 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init" />
     <MESSAGE value="добавил логин переход и в игру" />
-    <option name="LAST_COMMIT_MESSAGE" value="добавил логин переход и в игру" />
+    <MESSAGE value="играбельно" />
+    <option name="LAST_COMMIT_MESSAGE" value="играбельно" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

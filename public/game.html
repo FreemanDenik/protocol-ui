@@ -1,0 +1,45 @@
+<div id="game">
+    <br/>
+    <button onclick="localStorage.clear(); CONTAINER.load('/login.html');" class="btn btn-warning" style="float: right;">Выйти</button>
+    <h1>город Домини Диртх</h1>
+    <hr/>
+    <h2>Таверна "Грива Гавриила"</h2>
+    <hr/>
+    <div id="target">
+        <table class="table" style="text-align: center">
+            <thead>
+            <tr>
+                <th scope="col">Золото</th>
+                <th scope="col">Репутация</th>
+                <th scope="col">Здоровье</th>
+                <th scope="col">Бойкость</th>
+                <th scope="col">Жажда</th>
+                <th scope="col">Скрытность</th>
+            </tr>
+            </thead>
+            <tr>
+                <td><h3 id="gold"></h3></td>
+                <td><h3 id="reputation"></h3></td>
+                <td><h3 id="health"></h3></td>
+                <td><h3 id="fight"></h3></td>
+                <td><h3 id="thirst"></h3></td>
+                <td><h3 id="shadow"></h3></td>
+            </tr>
+        </table>
+    </div>
+    <h2 id="question"></h2>
+    <hr/>
+    <div id="answers"></div>
+    <hr/>
+</div>
+<script>
+    TARGET = {
+        gold:  $('#target h3#gold'),
+        reputation:  $('#target h3#reputation'),
+        health:  $('#target h3#health'),
+        fight:  $('#target h3#fight'),
+        thirst:  $('#target h3#thirst'),
+        shadow:  $('#target h3#shadow'),
+    };
+    initializer();
+</script>

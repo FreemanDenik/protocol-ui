@@ -1,0 +1,21 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+hr {
+    background: lightgrey
+}
+
+.login-block {
+    max-width: 300px;
+
+}
+
+.btn, .form-control {
+    border-radius: 0;
+}
+
+.display-none {
+    display: none;
+}

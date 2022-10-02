@@ -1,0 +1,55 @@
+<div id="login">
+    <br/>
+    <h1>Домини Диртх</h1>
+    <hr/>
+    <p> Вам поручено найти пропавшую эльфийку. <br/>
+        Вам удалось узнать, что последнее место где ее видели, это в городе
+        Домини Диртх, в который вы и прибыли... <br/>
+        И на который спустя некоторое время напали и взяли в осаду. <br/>
+    </p>
+    <p> Вы отправляетесь в городскую таверну, дабы там хоть что то разузнать. </p>
+    <p> Теперь по улицам не пройти без королевской грамоты, иначе вас заподозрят в шпионаже. </p>
+    <p> Вот и сейчас вас остановил очередной стражник и требует грамоту, подтверждающую личность. </p>
+    <hr/>
+
+
+    <form id="form-login">
+        <h2>Стой! Предъяви грамоту!</h2>
+        <div class="login-block">
+            <hr/>
+            <div>
+                <input name="email" type="email" class="form-control" id="validationEmail" placeholder="Введите email"
+                       required>
+            </div>
+
+            <hr/>
+            <div style="font-size: 11px; color:brown; text-align: left">
+                На почту будет отправлено одно письмо с паролем и все! <br/>
+                Не какого спама не будет, 3-м лицам почту не передаем <br/>
+                Только вы и мы и одно письмо, все по честному! :)
+            </div>
+            <hr/>
+        </div>
+        <div class="display-none">
+            <h3 id="say">Сейчас посмотрю... эм-м... Да! Есть такой.<br/>Отличной, распишитесь здесь и можешь идти.
+            </h3>
+            <div class="login-block">
+                <input disabled name="password" required type="password" class="form-control"
+                       placeholder="Введите пароль"/>
+                <hr/>
+                <div style="font-size: 11px; color:brown; text-align: left">
+                    Пароль был отправлен на почту при первом входе
+                </div>
+                <hr/>
+            </div>
+        </div>
+        <div class="login-block">
+        </div>
+        <button type="submit" class="btn btn-primary">
+            Предъявить грамоту
+        </button>
+    </form>
+</div>
+<script>
+    $('#form-login').on('submit', bindFormLogin);
+</script>
