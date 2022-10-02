@@ -47,8 +47,8 @@ async function sendQuery(url, tokenType, data) {
             body: data
         });
     }catch (error){
-        console.log(error.message, "error11");
-        //errorRedirect("/");
+        //console.log(error.message, "error11");
+        errorRedirect("/");
     }
 }
 // Отрисовка данных игры
