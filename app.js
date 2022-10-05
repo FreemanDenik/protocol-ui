@@ -7,10 +7,9 @@ app.use(express.static(__dirname + '/public'));
 app.get('/', function (req, res) {
     res.sendFile('index.html');
 });
-app.get('/s', function (req, res) {
-    res.sendFile('s.html');
+app.get('/somber', function (req, res) {
+    res.sendFile('somber.html');
 });
-
 var server = app.listen(5000, function () {
     console.log('Node server is running..');
 });

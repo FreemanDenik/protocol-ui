@@ -1,20 +1,28 @@
 <div id="game">
     <br/>
-    <button onclick="localStorage.clear(); CONTAINER.load('/login.html');" class="btn btn-warning" style="float: right;">Выйти</button>
-    <h1>город Домини Диртх</h1>
-    <hr/>
-    <h2>Таверна "Грива Гавриила"</h2>
+    <button onclick="localStorage.clear(); CONTAINER.load('/login.html');" class="btn btn-warning" style="float: right;">Покинуть таверну</button>
+
+
+    <h2>Таверна "Тлеющие угли"</h2>
     <hr/>
     <div id="target">
-        <table class="table" style="text-align: center">
+        <table class="table table-borderless" style="text-align: center">
             <thead>
-            <tr>
+            <tr class="min400">
                 <th scope="col">Золото</th>
                 <th scope="col">Репутация</th>
                 <th scope="col">Здоровье</th>
                 <th scope="col">Бойкость</th>
                 <th scope="col">Жажда</th>
                 <th scope="col">Скрытность</th>
+            </tr>
+            <tr class="max400">
+                <th scope="col">Зол</th>
+                <th scope="col">Реп</th>
+                <th scope="col">Здр</th>
+                <th scope="col">Бок</th>
+                <th scope="col">Жжд</th>
+                <th scope="col">Скрт</th>
             </tr>
             </thead>
             <tr>

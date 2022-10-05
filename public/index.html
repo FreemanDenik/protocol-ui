@@ -2,10 +2,11 @@
 <html lang="ru">
 <head>
     <title>Домини Диртх</title>
+    <!--    <base href="http://somber.online"/>-->
     <base href="http://localhost:5000"/>
     <!-- Сам придумал   -->
     <server href="http://localhost:8080"></server>
-
+    <link type="image/png" sizes="16x16" rel="icon" href="/img/favicon.png">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -13,25 +14,45 @@
     <meta name="keywords" content="игра, детектив, средние века, фэнтази"/>
     <meta name="author" content="ImDenik"/>
     <meta name="description" content=""/>
-    <meta name="generator" content="Joomla! - Open Source Content Management"/>
+    <!--    <meta name="generator" content="Joomla! - Open Source Content Management"/>-->
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"
             integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 
     <link href="/css/style.css?fcas" rel="stylesheet">
-    <script src="/js/java-script.js?vssss"></script>
-
+    <script src="/js/java-script.js?vsssssds"></script>
 
 </head>
 <body>
 
 <div id="container" class='container'></div>
+<div class="modal fade" id="errorModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Не большая заминка</h5>
+            </div>
+            <div class="modal-body">
+                Сервер пока не отвечает, возможно технические работы
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick='errorRedirect("/");' class="btn btn-primary">Понял</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
 <script>
+
+    // в переменной записаны названия параметров со значением null,
+    // для того что бы идея не ругалась
     let TOKEN_INFO = {
         type: null,
         accessToken: null,
@@ -41,7 +62,7 @@
     let GAME_SERVER;
     let CONTAINER;
     let TARGET;
-
+    // Функция инициализации после полной загрузки страницы
     $(async function () {
         // Инициализация глобальных переменных
         TOKEN_INFO = localStorage.getItem("token") ? JSON.parse(localStorage.getItem("token")) : null;
@@ -53,62 +74,28 @@
         if (TOKEN_INFO === null) {
             CONTAINER.load('/login.html');
         } else {
-            //REFRESH_INIT = true;
             CONTAINER.load('/game.html');
         }
     })
 
-    // Инициализация игры и первый запрос после загрузки страницы
+    // Инициализация игры и первый запрос
     async function initializer() {
-        console.log("-- START метод initializer -- ");
-        console.log(" запрос инициализации /api/game/initializer");
         // Запрос на инициализацию
         let response = await sendQuery('api/game/initializer', 'access');
+        let json = await response.json();
+        // Отрисовка данных игры
+        printGameInfo(json);
 
-        // Если при перезагрузке страницы, ответ 403 авторизация не успешна,
-        // скорее всего протух accessToken (он короткоживущий)
-        if (response.status === 403/* && REFRESH_INIT === true*/) {
-            console.log(" при перезагрузке странице ответ 403 токен протух");
-            console.log(" запрос на переустановку токена access токена");
-            // Делаем запрос установку нового accessToken
-            if (await tokenReset() === true) {
-                console.log(" переустановку access токена прошла успешна");
-                console.log(" запрос на переустановку всех токенов /api/auth/refresh");
-                // Рекурсивная инициализация
-                console.log(" рекурсивный вызов initializer");
-                await initializer();
-            }
-        } else if (!response.ok) {
-            // В случаи ошибки т.е. refresh токен протух сбрасываем все и отправляем на главную страницу
-            errorRedirect("/");
-
-        } else {
-            // Если запрос успешен работаем с ним
-            let json = await response.json();
-            // Отрисовка данных
-            printGameInfo(json);
-
-            console.log("-- END   метод initializer -- ");
-        }
     }
 
-    // Шаг игры, отправить сделанный выбор и получить новое событие с
+    // Шаг игры, отправить сделанный выбор и получить новое событие
     async function sendAction(event, answer) {
+        // Отправляем действие
         let response = await sendQuery('api/game/go', 'access', '{"event":"' + event + '","answer":"' + answer + '"}');
 
-        if (response.status == 403) {
-            console.log("Токен протух");
-            if (await tokenReset() === true) {
-                console.log("Переустановка токена и рекурсия");
-                await sendAction(event, answer);
-            }
-        } else if (!response.ok) {
-            // В случаи ошибки т.е. refresh токен протух сбрасываем все и отправляем на главную страницу
-            errorRedirect("/");
-        } else {
-            let json = await response.json();
-            printGameInfo(json);
-        }
+        let json = await response.json();
+        printGameInfo(json);
+
     }
 
     // Привязка событий к форме логин
@@ -116,7 +103,7 @@
         event.preventDefault();
         let form = convertFormToJSON(event.target);
         let action = $(this).attr('action');
-        let response = await sendQuery('api/auth/register', null, form);
+        let response = await sendQuery(action, null, form);
 
         if (!response.ok) {
             let error = await response.text();
@@ -128,10 +115,9 @@
                 $(this).find('div[class=display-none]').removeClass("display-none");
                 $(this).find('input[name=password]').attr('disabled', false);
                 $(this).find('button[type=submit]').text('Расписаться и отправиться в таверну');
-                $(this).attr('action', GAME_SERVER + '/api/auth/login')
+                $(this).attr('action', 'api/auth/login')
 
             } else {
-                console.log("token был помещен в localStorage");
                 TOKEN_INFO = json;
                 localStorage.setItem("token", JSON.stringify(TOKEN_INFO));
                 CONTAINER.load(CLIENT_SERVER + '/game.html');

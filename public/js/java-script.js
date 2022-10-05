@@ -7,13 +7,13 @@ function convertFormToJSON(form) {
         }, {}));
 }
 
-//Redirect при протухания всего или перезагрузки сервера
+// очищаем локальное хранилище и redirect на указанный url
 function errorRedirect(url) {
     localStorage.clear();
     window.location = url;
     return;
 }
-// Переустановка access токена
+// Переустановка access токена (короткоживущего)
 async function tokenReset() {
     try {
         let response = await sendQuery('api/auth/token', null, '{"refreshToken":"' + TOKEN_INFO.refreshToken + '"}');
@@ -37,7 +37,7 @@ async function sendQuery(url, tokenType, data) {
                 token = TOKEN_INFO.type + ' ' + TOKEN_INFO.refreshToken;
                 break;
         }
-        return await fetch(GAME_SERVER + '/' + url, {
+        let response = await fetch(GAME_SERVER + '/' + url, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': token,
@@ -46,9 +46,24 @@ async function sendQuery(url, tokenType, data) {
             method: 'POST',
             body: data
         });
+        // Если при перезагрузке страницы, ответ 403 авторизация не успешна,
+        // скорее всего протух access токен (он короткоживущий)
+        if (response.status === 403) {
+            // Обновляем токен и сразу используем его в условии
+            if (await tokenReset() === true) {
+                // Отправляем инициализацию повторно
+                response = await sendQuery(url, tokenType, data);
+                // Если снова не успешно, то сбрасываем все и отправляем на главную страницу
+                if (!response.ok) {
+                    errorRedirect("/");
+                }
+            }
+        }
+        return await response;
+
     }catch (error){
-        //console.log(error.message, "error11");
-        errorRedirect("/");
+        console.log("try catch!");
+        new bootstrap.Modal(document.getElementById('errorModal')).show();
     }
 }
 // Отрисовка данных игры
