@@ -9,22 +9,24 @@ function convertFormToJSON(form) {
 
 // Отрисовка данных игры
 function printGameInfo(json) {
-    $('#target h3#gold').text(json.first.gold)
-    $('#target h3#reputation').text(json.first.reputation)
-    $('#target h3#health').text(json.first.health)
-    $('#target h3#thirst').text(json.first.thirst)
-    $('#target h3#fight').text(json.first.fight)
-    $('#target h3#shadow').text(json.first.shadow)
+    let target = json.first;
+    let event = json.second;
+    $('#target h3#gold').text(target.gold)
+    $('#target h3#reputation').text(target.reputation)
+    $('#target h3#health').text(target.health)
+    $('#target h3#thirst').text(target.thirst)
+    $('#target h3#fight').text(target.fight)
+    $('#target h3#shadow').text(target.shadow)
 
-    $('#question').text(json.second.question);
+    $('#question').text(event.question);
     $('#answers').empty();
-    $.each(json.second.answers, function (e, i) {
+    $.each(event.answers, function (e, i) {
         $('#answers').append(
             $('<button/>', {
                 text: i.text,
                 'class': 'btn btn-primary',
                 click: function () {
-                    sendAction(json.second.id, i.id);
+                    sendAction(event.id, i.id);
                 }
 
             })

@@ -30,7 +30,7 @@ let TOKEN_REPOSITORY = {
             console.info("localStorage is null");
         }
     },
-    isNull: function (){
+    isNull: function () {
         return localStorage.getItem("tokens") ? false : true
     }
 };
@@ -66,8 +66,9 @@ async function tokenReset() {
 // Отправка запроса
 async function sendQuery(url, tokenType, data) {
     try {
-        console.warn(GAME_SERVER);
-        let response = await fetch(GAME_SERVER + '/' + url, {
+        if (DEBUG) console.info('-- start sendQuery --')
+        if (DEBUG) console.info('отправка запроса ' + GAME_SERVER + '/' + url)
+        let response1 = await fetch(GAME_SERVER + '/' + url, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': TOKEN_REPOSITORY.getAccessTokenWithType(tokenType),
@@ -76,13 +77,14 @@ async function sendQuery(url, tokenType, data) {
             method: 'POST',
             body: data
         });
-
         // Если при перезагрузке страницы, ответ 403 авторизация не успешна,
         // скорее всего протух access токен (он короткоживущий)
-        if (response.status === 403) {
+        if (response1.status === 403) {
             // Обновляем токен и сразу используем его в условии
-            console.log('обновление токена')
+            console.info('ответ response.status 403, обновление токена');
             if (await tokenReset() === true) {
+                if (DEBUG) console.info('токен успешно обновлен');
+                if (DEBUG) console.info('повторная отправка запроса ' + GAME_SERVER + '/' + url);
                 // Отправляем инициализацию повторно
                 let response2 = await fetch(GAME_SERVER + '/' + url, {
                     headers: {
@@ -93,20 +95,31 @@ async function sendQuery(url, tokenType, data) {
                     method: 'POST',
                     body: data
                 });
+
                 // Если снова не успешно, то сбрасываем все и отправляем на главную страницу
                 if (!response2.ok) {
-                    //errorRedirect("/");
+                    if (DEBUG) console.info('повторная отправка запроса не успешна');
+                    if (DEBUG) console.log("response 2 status", response2.status);
+                    if (!DEBUG) errorRedirect("/");
+
                 } else {
+                    if (DEBUG) console.info('-- end sendQuery --');
                     return await response2;
                 }
             }
-        } else if (!response.ok) {
-            //errorRedirect("/");
+        } else if (!response1.ok) {
+            if (DEBUG) console.info('отправка запроса не успешна');
+            if (DEBUG) console.log("response 1 status", response1.status);
+            if (!DEBUG) errorRedirect("/");
+
         }
-        return await response;
+        if (DEBUG) console.info('-- end sendQuery --');
+        return await response1;
 
     } catch (error) {
-        console.log("try catch!", error.status);
-        //new bootstrap.Modal(document.getElementById('errorModal')).show();
+        if (DEBUG) console.info('Общая ошибка');
+        if (DEBUG) console.log("try catch!", error);
+        if (!DEBUG) new bootstrap.Modal(document.getElementById('errorModal')).show();
+
     }
 }

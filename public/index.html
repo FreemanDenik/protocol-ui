@@ -17,7 +17,7 @@
             integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 
     <link href="/css/style.css?fcas" rel="stylesheet">
-    <script src="/js/query-token-app.js"></script>
+    <script src="/js/query-token-app.js?dsdsdsdda"></script>
     <script src="/js/java-script.js?vccccc"></script>
 
 </head>
@@ -35,7 +35,7 @@
                 Сервер пока не отвечает, возможно технические работы
             </div>
             <div class="modal-footer">
-                <button type="button" onclick='errorRedirect("/");' class="btn btn-primary">Понял</button>
+                <button type="button" onclick='window.location = "/"' class="btn btn-primary">Понял</button>
             </div>
         </div>
     </div>
@@ -43,7 +43,8 @@
 </body>
 </html>
 <script>
-
+    // Если поставить true то функции перестанут редиректить чтобы было видно текст ошибки в логах
+    let DEBUG = false;
     let CONTAINER;
     let TARGET;
     // Функция инициализации после полной загрузки страницы
@@ -66,7 +67,9 @@
         // Получаем json
         let json = await response.json();
         // Отрисовка данных игры
-        printGameInfo(json);
+        if (response.ok)
+            printGameInfo(json);
+        else if (DEBUG) console.warn('функция initializer, не корректный json ответ: ' + response.status);
 
     }
 
@@ -76,7 +79,9 @@
         let response = await sendQuery('api/game/go', 'access', '{"event":"' + event + '","answer":"' + answer + '"}');
         // Получаем json
         let json = await response.json();
-        printGameInfo(json);
+        if (response.ok)
+            printGameInfo(json);
+        else if (DEBUG) console.warn('функция sendAction, не корректный json ответ: ' + response.status);
 
     }
 
@@ -95,8 +100,13 @@
             $(this).find('button[type=submit]').text('Расписаться ');
             $(this).attr('action', 'api/auth/login')
 
+        } else if (!response.ok && DEBUG) {
+            console.warn('функция bindFormLogin, не корректный json ответ: ' + response.status);
         } else {
             TOKEN_REPOSITORY.setTokens(json);
+            if (json.roles.find(account => account === "ADMIN")) {
+                window.location = "/admin/";
+            }
             $('#form-login').remove();
             $('#login').append('<h1>Ваша грамота в порядке, ступайте</h1><hr/>')
             $('#login').append('<button class="btn btn-primary" onclick="CONTAINER.load(\'/game.html\');">Отправится в таверну</button>')
