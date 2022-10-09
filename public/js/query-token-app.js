@@ -1,37 +1,45 @@
 let GAME_SERVER = 'http://localhost:8080';
 let TOKEN_REPOSITORY = {
+    tokens: null,
+    isNull: function (){
+        return this.tokens === null;
+    },
+    initializer: function () {
+        let ls = localStorage.getItem("tokens") ? JSON.parse(localStorage.getItem("tokens")) : null;
+        if (ls !== null) {
+            this.tokens = ls;
+            if (DEBUG) console.info("localStorage initializer");
+        } else {
+            this.tokens = null;
+            if (DEBUG) console.info("localStorage is null");
+        }
+    },
     getAccessTokenWithType: function (mode) {
-        if (!this.isNull()) {
-            let tokens = this.getTokens();
+        if (this.tokens != null) {
             switch (mode) {
                 case "access":
-                    return tokens.type + ' ' + tokens.accessToken;
+                    return this.tokens.type + ' ' + this.tokens.accessToken;
                 case "refresh":
-                    return tokens.type + ' ' + tokens.refreshToken;
+                    return this.tokens.type + ' ' + this.tokens.refreshToken;
             }
         }
     },
     setAccessToken: function (accessToken) {
-        let ls = localStorage.getItem("tokens") ? JSON.parse(localStorage.getItem("tokens")) : null;
-        ls.accessToken = accessToken;
-        localStorage.setItem("tokens", JSON.stringify(ls));
+        if (this.tokens != null) {
+            let ls = localStorage.getItem("tokens") ? JSON.parse(localStorage.getItem("tokens")) : null;
+            ls.accessToken = accessToken;
+            this.tokens = ls;
+            localStorage.setItem("tokens", JSON.stringify(ls));
+        } else if (DEBUG) console.info("localStorage is null");
     },
     setTokens: function (tokens) {
-
+        this.tokens = tokens;
         localStorage.setItem("tokens", JSON.stringify(tokens));
     },
     getTokens: function () {
-        let ls = localStorage.getItem("tokens") ? JSON.parse(localStorage.getItem("tokens")) : null;
-
-        if (ls !== null) {
-            return ls;
-        } else {
-            return null;
-            console.info("localStorage is null");
-        }
-    },
-    isNull: function () {
-        return localStorage.getItem("tokens") ? false : true
+        if (this.tokens != null) {
+            return this.tokens;
+        } else if (DEBUG) console.info("localStorage is null");
     }
 };
 

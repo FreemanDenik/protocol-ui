@@ -11,7 +11,7 @@
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"
             integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 
-    <script src="/js/query-token-app.js?ss"></script>
+    <script src="/js/query-token-app.js?dddss"></script>
     <style>
         input[type=number] {
             max-width: 50px;
@@ -20,41 +20,79 @@
 </head>
 <body>
 <h1>ADMIN панель</h1>
-<button onclick="localStorage.clear(); window.location = '/'" class="btn btn-warning" style="float: right;">Покинуть админку</button>
+<button onclick="localStorage.clear(); window.location = '/'" class="btn btn-warning" style="float: right;">Покинуть
+    админку
+</button>
 
 
 <hr/>
 <div style="padding: 10px;">
-    <div id="event-container" style="width: 550px;">
-        <textarea id="question" class="form-control"> </textarea><br>
-        <div class="event" id="event" style="border: 1px solid black">
-            <textarea id="text" class="form-control"></textarea>
-            <label>Зол</label>
-            <input id="gold" type="number">
-            <label>Реп</label>
-            <input id="reputation" type="number">
-            <label>Здор</label>
-            <input id="health" type="number">
-            <label>Бойк</label>
-            <input id="fight" type="number">
-            <label>Жжд</label>
-            <input id="thirst" type="number">
-            <label>Скрт</label>
-            <input id="shadow" type="number">
-        </div>
-    </div>
-    <button onclick="add()">+</button>
+    <table>
+        <tr>
+            <td>
+                <div id="event-container" style="width: 580px;">
+                    <div>
+                        <label>Происходящее событие</label>
+                        <textarea id="question" class="form-control"> </textarea><br>
+                        <label>Варианты ответов</label>
+                        <div class="event" id="event">
+                            <textarea id="text" class="form-control"></textarea>
+                            <br>
+                            <label>Зол</label>
+                            <input id="gold" type="number">
+                            <label>Реп</label>
+                            <input id="reputation" type="number">
+                            <label>Здор</label>
+                            <input id="health" type="number">
+                            <label>Бойк</label>
+                            <input id="fight" type="number">
+                            <label>Жжд</label>
+                            <input id="thirst" type="number">
+                            <label>Скрт</label>
+                            <input id="shadow" type="number">
+
+                            <hr>
+                        </div>
+                    </div>
+
+                </div>
+                <button onclick="add()">+</button>
+            </td>
+            <td style="vertical-align: text-top; padding-left: 50px;">
+                <div id="events">
+
+                </div>
+            </td>
+        </tr>
+    </table>
 </div>
+<hr>
 <button onclick="save()">save</button>
 </body>
 </html>
 <script>
-    function add(){
+    // Если поставить true то функции перестанут редиректить чтобы было видно текст ошибки в логах
+    let DEBUG = true;
+    $(async function () {
+        TOKEN_REPOSITORY.initializer();
+        // Отправка запроса
+       await events();
+    })
+    async function events(){
+        let response = await sendQuery('api/admin/events?size=3&page=0', 'access', null);
+        let json = await response.json();
+        $('#events').empty();
+        $.each(json, function (e, i) {
+            $('#events').append('<p>' + i.question + '</p>');
+        })
+    }
+    function add() {
         let eventContainer = $('#event-container');
         let event = eventContainer.find('#event').clone();
-
+        event.find("hr").before( "<button onclick='$(this).parent().remove()'>Х</button>" );
         eventContainer.append(event);
     }
+
     async function save() {
 
 
@@ -97,13 +135,9 @@
             answers: answers
         }
         let response = await sendQuery('api/admin/add', 'access', JSON.stringify(send));
+        await events();
         console.log(await response.text());
     }
 
-    $(async function () {
-        // Отправка запроса
-        let response = await sendQuery('api/admin/events', 'access');
-        let json = await response.json();
-        console.log(json);
-    })
+
 </script>
