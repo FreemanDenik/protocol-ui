@@ -16,9 +16,9 @@
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"
             integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 
-    <link href="/css/style.css?fcas" rel="stylesheet">
-    <script src="/js/query-token-app.js?dsdsdsdda"></script>
-    <script src="/js/java-script.js?vccccc"></script>
+    <link href="/css/style.css?fs" rel="stylesheet">
+    <script src="/js/query-token-app.js?dsdssdda"></script>
+    <script src="/js/java-script.js?vcccc"></script>
 
 </head>
 <body>
@@ -44,7 +44,7 @@
 </html>
 <script>
     // Если поставить true то функции перестанут редиректить чтобы было видно текст ошибки в логах
-    let DEBUG = false;
+    let DEBUG = true;
     let CONTAINER;
     let TARGET;
     // Функция инициализации после полной загрузки страницы
@@ -94,20 +94,30 @@
         let response = await sendQuery(action, null, form);
 
         let json = await response.json();
-        if (json.user_already_exists) {
-            console.log("Такой пользователь уже есть");
-            $(this).find('div[class=display-none]').removeClass("display-none");
-            $(this).find('input[name=password]').attr('disabled', false);
-            $(this).find('button[type=submit]').text('Расписаться ');
-            $(this).attr('action', 'api/auth/login')
+        console.log(json);
+        if (json.errors && json.errors.length !== 0) {
+            if (json.code === 1000) {
+                console.log("Такой пользователь уже есть");
+                $(this).find('div[class=display-none]').removeClass("display-none");
+                $(this).find('input[name=password]').attr('disabled', false);
+                $(this).find('button[type=submit]').text('Расписаться ');
+                $(this).attr('action', 'api/auth/login')
 
-        } else if (!response.ok && DEBUG) {
-            console.warn('функция bindFormLogin, не корректный json ответ: ' + response.status);
-        } else {
-            TOKEN_REPOSITORY.setTokens(json);
-            if (json.roles.find(account => account === "ADMIN")) {
-                window.location = "/admin/";
+            } else if (!response.ok && DEBUG) {
+                console.warn('функция bindFormLogin, не корректный json ответ: ' + response.status);
+            } else {
+                $("#login-errors").empty();
+                $.each(json.errors, function (e, i) {
+                    $("#login-errors").append("<p>" + i + "</p>");
+                })
+
             }
+        } else {
+            console.log(json)
+            TOKEN_REPOSITORY.setTokens(json);
+            // if (json.roles.find(account => account === "ADMIN")) {
+            //     window.location = "/admin/";
+            // }
             $('#form-login').remove();
             $('#login').append('<h1>Ваша грамота в порядке, ступайте</h1><hr/>')
             $('#login').append('<button class="btn btn-primary" onclick="CONTAINER.load(\'/game.html\');">Отправится в таверну</button>')

@@ -78,7 +78,8 @@ async function sendQuery(url, tokenType, data) {
         if (DEBUG) console.info('отправка запроса ' + GAME_SERVER + '/' + url)
         let response1 = await fetch(GAME_SERVER + '/' + url, {
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json; charset="utf-8"',
+
                 'Authorization': TOKEN_REPOSITORY.getAccessTokenWithType(tokenType),
             },
             mode: 'cors',

@@ -89,6 +89,7 @@
     function add() {
         let eventContainer = $('#event-container');
         let event = eventContainer.find('#event').clone();
+        event.find('input').val('');
         event.find("hr").before( "<button onclick='$(this).parent().remove()'>Х</button>" );
         eventContainer.append(event);
     }

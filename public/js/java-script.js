@@ -11,25 +11,25 @@ function convertFormToJSON(form) {
 function printGameInfo(json) {
     let target = json.first;
     let event = json.second;
+    console.log(target, event);
     $('#target h3#gold').text(target.gold)
     $('#target h3#reputation').text(target.reputation)
-    $('#target h3#health').text(target.health)
-    $('#target h3#thirst').text(target.thirst)
-    $('#target h3#fight').text(target.fight)
+    $('#target h3#influence').text(target.influence)
+    $('#target h3#luck').text(target.luck)
     $('#target h3#shadow').text(target.shadow)
 
-    $('#question').text(event.question);
+    $('#question').text(event.eventText);
     $('#answers').empty();
     $.each(event.answers, function (e, i) {
-        $('#answers').append(
-            $('<button/>', {
-                text: i.text,
-                'class': 'btn btn-primary',
-                click: function () {
-                    sendAction(event.id, i.id);
-                }
-
-            })
-        ).append("<br/><br/>");
+        let b = $('<button/>', {
+            text: i.answerText,
+            'class': 'btn btn-primary',
+            click: function () {
+                sendAction(event.id, i.id);
+            }
+        })
+        if(i.enabled === false)
+            b.attr('disabled', true);
+        $('#answers').append(b).append("<br/><br/>");
     })
 }
